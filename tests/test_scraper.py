@@ -6,6 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from scraper import manual  # noqa: E402
+from scraper.compare import mark_cheapest, match_key  # noqa: E402
 from scraper.categorise import categorise  # noqa: E402
 from scraper.lidl import parse_item, parse_unit_price  # noqa: E402
 from scraper.run import enrich, update_history  # noqa: E402
@@ -103,6 +104,39 @@ class ManualAndRun(unittest.TestCase):
         h = update_history([p], {"a": [["2026-11-01", 3.0]]}, "2026-11-06")
         self.assertEqual(h["a"], [["2026-11-01", 3.0], ["2026-11-06", 2.0]])
         self.assertTrue(p["is_lowest"])
+
+
+class CompareShops(unittest.TestCase):
+    def prod(self, store, name, price, unit_price=None, unit="kg", pack=None):
+        return {"store": store, "name": name, "price": price, "pack": pack,
+                "unit_price": unit_price, "unit": unit if unit_price else None}
+
+    def test_match_key_ignores_shop_brand_and_size(self):
+        self.assertEqual(match_key("Tesco British Chicken Breast Fillets 1KG"),
+                         match_key("M&S British Chicken Breast Fillets"))
+        self.assertEqual(match_key("Tesco Beef Lasagne 400G"), match_key("M&S Beef Lasagne Serves 1"))
+        self.assertNotEqual(match_key("Tesco Beef Mince 20% Fat 500g"), match_key("M&S Beef Mince 5% Fat"))
+        self.assertIsNone(match_key("M&S Spaghetti"))  # too vague to match safely
+
+    def test_cheaper_shop_wins_on_unit_price(self):
+        big = self.prod("Tesco", "Tesco Chicken Breast Fillets 2kg", 11.50, 5.75)
+        small = self.prod("M&S", "M&S Chicken Breast Fillets", 5.50, 11.00)
+        mark_cheapest([big, small])
+        self.assertTrue(big["best_across_shops"])
+        self.assertEqual(small["cheaper_at"]["store"], "Tesco")
+        self.assertNotIn("cheaper_at", big)
+
+    def test_same_shop_or_no_unit_is_left_alone(self):
+        a = self.prod("Tesco", "Tesco Beef Lasagne 400G", 3.85, 9.62)
+        b = self.prod("Tesco", "Tesco Beef Lasagne 800G", 6.00, 7.50)
+        c = self.prod("M&S", "M&S Beef Lasagne", 4.20)  # no £/kg, no pack: can't compare
+        mark_cheapest([a, b, c])
+        self.assertFalse(any(k in p for p in (a, b, c) for k in ("cheaper_at", "best_across_shops")))
+
+    def test_clean_offer(self):
+        self.assertIsNone(manual.clean_offer("Important information"))
+        self.assertEqual(manual.clean_offer("£5.50 Meal Deal Drink Clubcard Price £6 Meal Deal Drink Regular Price"),
+                         "Meal deal drink (£5.50 deal with Clubcard)")
 
 
 if __name__ == "__main__":

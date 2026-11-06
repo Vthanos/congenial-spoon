@@ -10,6 +10,7 @@ from pathlib import Path
 
 from . import lidl, manual
 from .categorise import categorise
+from .compare import mark_cheapest
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_DIR = ROOT / "docs" / "data"
@@ -80,6 +81,7 @@ def main():
     for p in products:
         p.setdefault("source", "Manual" if p.get("manual") else p["store"])
         enrich(p)
+    mark_cheapest(products)
     history = update_history(products, _load(HISTORY, {}), today)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)

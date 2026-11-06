@@ -1,12 +1,13 @@
-"""Deals you type in yourself (Tesco, M&S, anywhere) via data/manual_deals.csv.
+"""Prices that don't come from a scraper.
 
-Tesco and M&S block automated price checks (Tesco's site returns 403 to bots and
-M&S everyday food is sold through Ocado, which does the same), so these come in
-by hand. Edit the CSV on GitHub in the browser and the site rebuilds itself.
+- data/manual_deals.csv: deals you type in yourself (edit on GitHub, site rebuilds).
+- data/snapshots/*.csv: Tesco and M&S (via Ocado) prices copied by browsing their
+  sites, because both block automated price checks. These expire by themselves.
 """
 import csv
 import datetime as dt
 import hashlib
+import re
 from pathlib import Path
 
 from .lidl import parse_unit_price
@@ -23,6 +24,21 @@ def _num(v):
     if v.endswith("p"):
         return float(v[:-1]) / 100
     return float(v)
+
+
+_NOT_OFFERS = {"important information", "everyday low price", "aldi price match"}
+_PACK_JUNK = {"typically", "each"}
+
+
+def clean_offer(text):
+    """Shorten Tesco's wordy offer labels; drop labels that aren't offers."""
+    text = (text or "").strip()
+    if text.lower() in _NOT_OFFERS:
+        return None
+    m = re.match(r"(£[\d.]+) Meal Deal (Main|Snack|Drink) Clubcard Price", text)
+    if m:
+        return f"Meal deal {m.group(2).lower()} ({m.group(1)} deal with Clubcard)"
+    return text or None
 
 
 def scrape(path=None):
@@ -57,7 +73,8 @@ def _read(path):
             was = _num(row.get("was_price"))
             unit_text = (row.get("unit_price") or "").strip() or None
             unit_price, unit = parse_unit_price(unit_text)
-            offer = (row.get("offer") or "").strip() or None
+            offer = clean_offer(row.get("offer"))
+            pack = (row.get("pack") or "").strip()
             out.append({
                 "id": "manual-" + hashlib.md5(f"{store}|{name}".lower().encode()).hexdigest()[:10],
                 "store": store,
@@ -66,7 +83,7 @@ def _read(path):
                 "was_price": round(was, 2) if was and was > price else None,
                 "offer": offer,
                 "loyalty": (row.get("loyalty") or "").strip().lower() in ("y", "yes", "true", "1"),
-                "pack": (row.get("pack") or "").strip() or None,
+                "pack": None if pack.lower() in _PACK_JUNK else pack or None,
                 "unit_text": unit_text,
                 "unit_price": unit_price,
                 "unit": unit,

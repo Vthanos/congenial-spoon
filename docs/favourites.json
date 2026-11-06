@@ -1,0 +1,71 @@
+[
+  {
+    "name": "Beef mince",
+    "why": "patties & bolognese",
+    "match": "beef.*mince|minced beef|steak mince",
+    "exclude": "pie|lasagne|bolognese|chilli|cottage|meatball|burger|mincemeat|chicken &"
+  },
+  {
+    "name": "Chicken breast & thighs",
+    "why": "rice and chicken",
+    "match": "chicken (breast|thigh|mini fillet)",
+    "exclude": "cooked|roast|slices|breaded|crispy|tenders|kyiv|sandwich|soup|wrap|tikka|katsu|tandoori|pieces|chunks|bbq|crisps|pasta|rice|noodle|pie|stuffing|sweet chilli|flame grilled"
+  },
+  {
+    "name": "Rice",
+    "why": "rice and chicken",
+    "match": "\\brice\\b",
+    "exclude": "pudding|cakes|noodle|crackers|chicken|beef|curry|salad|kanzen|masala|korma|chow|sweet & sour|biryani"
+  },
+  {
+    "name": "Potatoes",
+    "why": "",
+    "match": "potato",
+    "exclude": "crisp|wedge|chips|skins|waffle|salad|mash|hash|croquette|rosti|gratin|dauphinoise|roast|sweet|soup|leek|pie|scrapples"
+  },
+  {
+    "name": "Spaghetti",
+    "why": "bolognese",
+    "match": "spaghetti",
+    "exclude": "bolognese|carbonara|meatballs|hoops|serves|sauce|tin"
+  },
+  {
+    "name": "Chopped tomatoes & passata",
+    "why": "bolognese",
+    "match": "chopped tomatoes|passata"
+  },
+  {
+    "name": "Onions",
+    "why": "bolognese & patties",
+    "match": "\\bonions?\\b",
+    "exclude": "rings|crisps|bhaji|gravy|chutney|pickled|spring|cheese|sandwich|soup|sausage|silverskin|mash|hash|chive|lazy|potato|pizza"
+  },
+  {
+    "name": "Pizza",
+    "why": "",
+    "match": "pizza",
+    "exclude": "base|kit|dough balls|crisps|garlic bread"
+  },
+  {
+    "name": "Red Bull",
+    "why": "",
+    "match": "red bull"
+  },
+  {
+    "name": "Diet Coke",
+    "why": "",
+    "match": "diet coke|coca.cola diet"
+  },
+  {
+    "name": "Beer & lager",
+    "why": "",
+    "match": "\\b(beer|lager|pilsner|ipa|ale|helles)\\b",
+    "exclude": "ginger beer|alcohol free|0\\.0%|bread"
+  },
+  {
+    "name": "Wine",
+    "why": "",
+    "match": "\\bwine\\b|merlot|malbec|shiraz|rioja|sauvignon|chardonnay|pinot|primitivo|grigio|tempranillo|\\bros[eé]\\b|viognier|gavi|vinho|burgundy|rh[oô]ne|cremant|prosecco",
+    "exclude": "vinegar|gums|mulled|sauce|gravy|stock"
+  }
+]

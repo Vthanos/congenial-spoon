@@ -18,6 +18,10 @@ SEARCH_TERMS = [
     "chicken", "ham", "tuna", "fish", "cheese", "yogurt", "milk", "eggs", "butter",
     "loaf", "rolls", "cereal", "porridge", "fruit", "banana", "vegetables", "potatoes",
     "beans", "crisps", "chocolate", "biscuits", "snack", "dessert", "juice", "coffee", "tea",
+    # your regular cooking + drinks (see docs/favourites.json)
+    "beef mince", "burgers", "chicken breast", "chicken thighs", "spaghetti",
+    "chopped tomatoes", "passata", "onions", "red bull", "energy drink", "diet coke",
+    "cola", "beer", "lager", "wine",
 ]
 
 
