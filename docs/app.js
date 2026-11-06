@@ -181,7 +181,7 @@ fetch("data/prices.json", { cache: "no-cache" })
     meta.textContent = `Updated ${when} · ${data.products.length} products`;
     for (const [name, s] of Object.entries(data.sources)) {
       const span = document.createElement("span");
-      span.textContent = ` · ${name === "Manual" ? "Your Tesco/M&S deals" : name}: ${s.ok ? s.count : "failed, showing old data"}`;
+      span.textContent = ` · ${name === "Manual" ? "Tesco & M&S (checked in browser)" : name}: ${s.ok ? s.count : "failed, showing old data"}`;
       if (!s.ok) span.className = "bad";
       meta.append(span);
     }

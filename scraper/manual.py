@@ -11,7 +11,9 @@ from pathlib import Path
 
 from .lidl import parse_unit_price
 
-CSV_PATH = Path(__file__).resolve().parent.parent / "data" / "manual_deals.csv"
+DATA = Path(__file__).resolve().parent.parent / "data"
+CSV_PATH = DATA / "manual_deals.csv"
+SNAPSHOTS = DATA / "snapshots"  # deals copied from Tesco/Ocado by browsing (see README)
 
 
 def _num(v):
@@ -23,7 +25,19 @@ def _num(v):
     return float(v)
 
 
-def scrape(path=CSV_PATH):
+def scrape(path=None):
+    """Your own deals first (they win on duplicates), then the browser snapshots."""
+    paths = [path] if path else [CSV_PATH, *sorted(SNAPSHOTS.glob("*.csv"))]
+    seen, out = set(), []
+    for p in paths:
+        for row in _read(p):
+            if row["id"] not in seen:
+                seen.add(row["id"])
+                out.append(row)
+    return out
+
+
+def _read(path):
     if not path.exists():
         return []
     today = dt.date.today().isoformat()

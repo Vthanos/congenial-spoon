@@ -45,6 +45,10 @@ class Categorise(unittest.TestCase):
             ("Chicken & Bacon Sandwich", ""): ("Food to go", "no-cook"),
             ("Orange Juice 1L", ""): ("Drinks", "drink"),
             ("Beef Mince 5% Fat", ""): ("Meat & fish (raw)", "cook"),
+            ("Tesco Finest Prawn Cocktail Handcooked Crisps 150g", ""): ("Snacks & sweets", "no-cook"),
+            ("M&S Cotes Du Rhone Rose", ""): ("Alcohol", "drink"),
+            ("Rosedene Farms Small Pear Pack 550G", ""): ("Fruit & veg", "no-cook"),
+            ("M&S Beef Lasagne Serves 1", ""): ("Ready meals", "heat-only"),
         }
         for (name, path), want in cases.items():
             self.assertEqual(categorise(name, path), want, name)

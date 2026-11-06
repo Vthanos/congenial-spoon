@@ -6,7 +6,7 @@ on:
   workflow_dispatch:        # "Run workflow" button on GitHub
   push:
     paths:
-      - "data/manual_deals.csv"
+      - "data/**"
       - "scraper/**"
 
 permissions:

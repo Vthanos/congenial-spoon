@@ -9,10 +9,12 @@ shopping list with a running total. It costs **£0/month** to host.
 | Shop  | How | Notes |
 |-------|-----|-------|
 | Lidl  | Automatic, daily | Uses the public JSON behind lidl.co.uk search. Includes Lidl Plus prices (marked yellow) and the weekly offers. Lidl only lists its current range and offers online, not every product in store. |
-| Tesco | **You add deals** in `data/manual_deals.csv` | tesco.com blocks automated requests (HTTP 403), and Scrappy doesn't try to get round that. |
-| M&S   | **You add deals** in `data/manual_deals.csv` | marksandspencer.com only sells cakes and party food online. Everyday M&S food is sold through Ocado, which also blocks bots. |
+| Tesco | **Snapshot** in `data/snapshots/tesco.csv` | tesco.com blocks automated requests (HTTP 403), so offers are copied from a normal browser session. Last done 6 Nov 2026: 273 Clubcard offers on ready meals, pizza, sandwiches, soup, microwave rice, noodles, yoghurt, bread, crisps, cooked chicken and fruit. |
+| M&S   | **Snapshot** in `data/snapshots/ms.csv` | marksandspencer.com only sells cakes and party food online, so these are M&S products on Ocado (Ocado's prices, which can differ from M&S stores). Last done 6 Nov 2026: 128 offers. |
 
-### Adding a Tesco / M&S deal (takes 20 seconds)
+Snapshots don't update themselves. Rows expire automatically (Tesco by its own offer end date or after 2 weeks, M&S after 1 week), so stale prices vanish rather than mislead. Refresh them every week or two by browsing the offers pages again.
+
+### Adding a Tesco / M&S deal yourself (takes 20 seconds)
 On GitHub, open `data/manual_deals.csv`, click the pencil, add a line, and commit:
 
 ```
@@ -20,7 +22,7 @@ store,name,price,was_price,offer,loyalty,pack,unit_price,category,effort,valid_u
 Tesco,Tesco Chicken Tikka Masala & Rice,2.50,3.25,Clubcard Price,yes,400g,£6.25/kg,,,2026-11-30,
 ```
 Only `store`, `name` and `price` are required. Leave `category`/`effort` blank and they get guessed.
-Expired deals (past `valid_until`) disappear automatically. Delete the two `EXAMPLE` lines once you've started.
+Expired deals (past `valid_until`) disappear automatically. If the same product is in a snapshot, your line wins.
 
 ## Hosting it for free (one-time, ~10 minutes)
 
