@@ -49,9 +49,11 @@ Expired deals (past `valid_until`) disappear automatically. If the same product 
    git remote add origin https://github.com/<your-username>/scrappy.git
    git push -u origin main
    ```
-3. On GitHub, go to **Settings → Pages → Build and deployment**, choose *Deploy from a branch*,
-   branch `main`, folder `/docs`, and save.
-4. Go to **Actions → Update prices → Run workflow** to fill it with today's prices.
+3. On GitHub, go to **Settings → Pages → Build and deployment** and set **Source** to
+   **GitHub Actions**. (Not "Deploy from a branch": that publishes twice per update and
+   the two deploys collide, leaving them stuck on "deployment_queued".)
+4. Go to **Actions → Update prices → Run workflow**. It scrapes, saves the prices and
+   publishes the site in one go.
 5. Your site is at `https://<your-username>.github.io/scrappy/`. Add it to your phone's home screen.
 
 From then on, GitHub runs the scraper every morning at around 6:30 and the site updates itself.
