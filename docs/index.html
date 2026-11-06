@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scrappy - cheap, low-effort food</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="top">
+    <h1>Scrappy</h1>
+    <button id="listBtn" class="list-btn" aria-label="Shopping list">List <span id="listCount">0</span></button>
+  </div>
+  <p id="meta" class="meta">Loading prices…</p>
+</header>
+
+<section class="filters">
+  <input id="search" type="search" placeholder="Search e.g. pizza, lasagne, milk">
+  <div class="chips" id="effortChips" aria-label="Effort"></div>
+  <div class="chips" id="storeChips" aria-label="Store"></div>
+  <div class="row">
+    <select id="category" aria-label="Category"><option value="">All categories</option></select>
+    <select id="sort" aria-label="Sort">
+      <option value="saving">Biggest saving</option>
+      <option value="price">Cheapest</option>
+      <option value="unit">Best £/kg or £/l</option>
+      <option value="name">A–Z</option>
+    </select>
+    <label class="toggle"><input id="offersOnly" type="checkbox"> Offers only</label>
+    <label class="toggle"><input id="hideLoyalty" type="checkbox"> Hide app-only prices</label>
+  </div>
+</section>
+
+<main>
+  <section id="deals" class="deals"></section>
+  <div id="results"></div>
+</main>
+
+<aside id="drawer" class="drawer" hidden>
+  <div class="drawer-head">
+    <h2>Shopping list</h2>
+    <button id="closeList" aria-label="Close">✕</button>
+  </div>
+  <div id="listBody"></div>
+  <div class="drawer-foot">
+    <button id="copyList">Copy list</button>
+    <button id="clearList" class="danger">Clear</button>
+  </div>
+</aside>
+
+<template id="cardTpl">
+  <article class="card">
+    <img loading="lazy" alt="">
+    <div class="info">
+      <div class="badges"></div>
+      <h3></h3>
+      <div class="sub"></div>
+      <div class="price-row">
+        <span class="price"></span><span class="was"></span>
+      </div>
+      <div class="unit"></div>
+    </div>
+    <button class="add" aria-label="Add to list">+</button>
+  </article>
+</template>
+
+<script src="app.js"></script>
+</body>
+</html>
